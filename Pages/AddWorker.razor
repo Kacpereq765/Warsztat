@@ -18,7 +18,7 @@
 </MudContainer>
 
 @code {
-    private Worker worker = new(); // Inicjalizacja nowego pracownika
+    private Worker worker = new(); 
     private MudForm form;
 
     private void SubmitForm()
@@ -27,7 +27,7 @@
         {
             Console.WriteLine($"Dodano pracownika: {worker.Name}, Nazwisko: {worker.Surname}, Wiek: {worker.Age}, Adres zamieszkania pracownika: {worker.Adress}");
 
-            // Napisz później dodawanie pracownika do bazy danych lub pliku JSON
+            // Napisac pozniej dodawanie pracownika do bazy danych
         }
         else
         {
