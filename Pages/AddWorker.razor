@@ -1,0 +1,43 @@
+﻿@page "/AddWorker"
+@using MudBlazor
+
+<MudContainer>
+    <MudCard>
+        <MudCardContent>
+            <MudForm @ref="form" Model="worker" Validations="null">
+                <MudTextField @bind-Value="worker.Name" Label="Imię pracownika" Required="true" />
+                <MudTextField @bind-Value="worker.Surname" Label="Nazwisko pracownika" Required="true" />
+                <MudTextField @bind-Value="worker.Age" Label="Wiek pracownika" Required="true" />
+                <MudTextField @bind-Value="worker.Adress" Label="Adres zamieszkania pracownika" Required="true" />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj pracownika</MudButton>
+            </MudForm>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private Worker worker = new(); // Inicjalizacja nowego pracownika
+    private MudForm form;
+
+    private void SubmitForm()
+    {
+        if (form.IsValid)
+        {
+            Console.WriteLine($"Dodano pracownika: {worker.Name}, Nazwisko: {worker.Surname}, Wiek: {worker.Age}, Adres zamieszkania pracownika: {worker.Adress}");
+
+            // Napisz później dodawanie pracownika do bazy danych lub pliku JSON
+        }
+        else
+        {
+            Console.WriteLine("Formularz nie jest ważny.");
+        }
+    }
+
+    public class Worker
+    {
+        public string Name { get; set; } 
+        public string Surname { get; set; } 
+        public string Age { get; set; } 
+        public string Adress { get; set; }
+    }
+}
