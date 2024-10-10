@@ -1,0 +1,41 @@
+﻿@page "/AddWorkshop"
+@using MudBlazor
+
+<MudContainer>
+    <MudCard>
+        <MudCardContent>
+            <MudForm @ref="form" Model="workshop" Validations="null">
+                <MudTextField @bind-Value="workshop.Name" Label="Nazwa warsztatu" Required="true" />
+                <MudTextField @bind-Value="workshop.Description" Label="Opis warsztatu" Required="true" />
+                <MudTextField @bind-Value="workshop.Location" Label="Lokalizacja warsztatu" Required="true" />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj warsztat</MudButton>
+            </MudForm>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private Workshop workshop = new();
+    private MudForm form;
+
+    private void SubmitForm()
+    {
+        if (form.IsValid)
+        {
+            Console.WriteLine($"Dodano warsztat: {workshop.Name}, Opis: {workshop.Description}, Lokalizacja: {workshop.Location}");
+
+            // Napisac pozniej dodawanie warsztatu do bazy danych
+        }
+        else
+        {
+            Console.WriteLine("Formularz nie jest ważny.");
+        }
+    }
+
+    public class Workshop
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Location { get; set; }
+    }
+}
