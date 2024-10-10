@@ -11,6 +11,7 @@
                 <MudTextField @bind-Value="worker.Surname" Label="Nazwisko pracownika" Required="true" />
                 <MudTextField @bind-Value="worker.Age" Label="Wiek pracownika" Required="true" />
                 <MudTextField @bind-Value="worker.Adress" Label="Adres zamieszkania pracownika" Required="true" />
+                <MudTextField @bind-Value="worker.Position" Label="Stanowisko pracownika" Required="true" />
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj pracownika</MudButton>
             </MudForm>
         </MudCardContent>
@@ -25,7 +26,7 @@
     {
         if (form.IsValid)
         {
-            Console.WriteLine($"Dodano pracownika: {worker.Name}, Nazwisko: {worker.Surname}, Wiek: {worker.Age}, Adres zamieszkania pracownika: {worker.Adress}");
+            Console.WriteLine($"Dodano pracownika: {worker.Name}, Nazwisko: {worker.Surname}, Wiek: {worker.Age}, Adres zamieszkania pracownika: {worker.Adress}, Stanowisko: {worker.Position}");
 
             // Napisac pozniej dodawanie pracownika do bazy danych
         }
@@ -41,5 +42,6 @@
         public string Surname { get; set; } 
         public string Age { get; set; } 
         public string Adress { get; set; }
+        public string Position { get; set; }
     }
 }
