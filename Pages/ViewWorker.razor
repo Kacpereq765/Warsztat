@@ -1,9 +1,17 @@
 ﻿@page "/ViewWorker"
+@using MudBlazor
+@inject NavigationManager NavigationManager
 
-<h3>View Worker</h3>
+<h3>Pracownicy</h3>
 
-strona w trakcie pracy...
+<MudContainer>
+    <MudButton Variant="MudBlazor.Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="NavigateToAddWorker">
+        Dodaj Pracownika
+    </MudButton>
+</MudContainer>
 
 @code {
-
+    private void NavigateToAddWorker(){
+        NavigationManager.NavigateTo("/AddWorker");
+    }
 }

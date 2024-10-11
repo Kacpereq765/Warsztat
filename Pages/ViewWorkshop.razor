@@ -1,9 +1,17 @@
 ﻿@page "/ViewWorkshop"
+@using MudBlazor
+@inject NavigationManager NavigationManager
 
-<h3>View Workshop</h3>
+<h3>Warsztaty</h3>
 
-strona w trakcie pracy...
+<MudContainer>
+    <MudButton Variant="MudBlazor.Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="NavigateToAddWorkshop">
+        Dodaj Warsztat
+    </MudButton>
+</MudContainer>
 
 @code {
-
+    private void NavigateToAddWorkshop(){
+        NavigationManager.NavigateTo("/AddWorkshop");
+    }
 }
