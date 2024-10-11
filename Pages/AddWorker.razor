@@ -17,6 +17,7 @@
                 <MudTextField @bind-Value="worker.Position" Label="Stanowisko pracownika" Required="true" />
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj pracownika</MudButton>
             </MudForm>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Return">Powrót</MudButton>
         </MudCardContent>
     </MudCard>
 </MudContainer>
@@ -39,6 +40,11 @@
         {
             Console.WriteLine("Formularz nie jest ważny.");
         }
+    }
+
+    private async Task Return()
+    {
+        NavigationManager.NavigateTo("/ViewWorker");
     }
 
     private async Task SaveWorkerToLocalStorage(Worker worker)

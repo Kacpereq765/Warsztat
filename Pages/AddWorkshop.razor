@@ -15,6 +15,7 @@
                 <MudTextField @bind-Value="workshop.Location" Label="Lokalizacja warsztatu" Required="true" />
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj warsztat</MudButton>
             </MudForm>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Return">Powrót</MudButton>
         </MudCardContent>
     </MudCard>
 </MudContainer>
@@ -23,14 +24,13 @@
     private Workshop workshop = new();
     private MudForm form;
 
-    // Dodaj async do metody SubmitForm
     private async Task SubmitForm()
     {
         if (form.IsValid)
         {
             Console.WriteLine($"Dodano warsztat: {workshop.NameWorkshop}, Opis: {workshop.Description}, Lokalizacja: {workshop.Location}");
 
-            await SaveWorkshopToLocalStorage(workshop); // Użyj await
+            await SaveWorkshopToLocalStorage(workshop); 
 
             NavigationManager.NavigateTo("/ViewWorkshop");
         }
@@ -38,6 +38,11 @@
         {
             Console.WriteLine("Formularz nie jest ważny.");
         }
+    }
+
+    private async Task Return()
+    {
+        NavigationManager.NavigateTo("/ViewWorkshop");
     }
 
     private async Task SaveWorkshopToLocalStorage(Workshop workshop)
