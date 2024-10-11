@@ -1,0 +1,67 @@
+﻿@page "/AddCar"
+@using MudBlazor
+@using Blazored.LocalStorage
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService localStorage
+
+<h3>Dodaj samochód do naprawy</h3>
+
+<MudContainer>
+    <MudCard>
+        <MudCardContent>
+            <MudForm @ref="form" Model="car">
+                <MudTextField @bind-Value="car.Model" Label="Model samochodu" Required="true" />
+                <MudTextField @bind-Value="car.Year" Label="Rocznik samochodu" Required="true" />
+                <MudTextField @bind-Value="car.Broken" Label="Podaj co zepsute" Required="true" />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj samochód</MudButton>
+            </MudForm>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Return">Powrót</MudButton>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private Car car = new();
+    private MudForm form;
+
+    private async void SubmitForm()
+    {
+        if (form.IsValid)
+        {
+            Console.WriteLine($"Dodano samochód: {car.Model}, rocznik: {car.Year}, zepsute w nim: {car.Broken}");
+
+            await SaveWorkerToLocalStorage(car);
+
+            NavigationManager.NavigateTo("/ViewCar");
+        }
+        else
+        {
+            Console.WriteLine("Formularz nie jest ważny.");
+        }
+    }
+
+    private async Task Return()
+    {
+        NavigationManager.NavigateTo("/ViewCar");
+    }
+
+    private async Task SaveWorkerToLocalStorage(Car car)
+    {
+        // Wczytanie istniejących pracowników
+        var cars = await localStorage.GetItemAsync<List<Car>>("cars") ?? new List<Car>();
+
+        // Dodanie nowego pracownika
+        cars.Add(car);
+
+        // Zapis do localStorage
+        await localStorage.SetItemAsync("cars", cars);
+        Console.WriteLine("Dodano samochód do localStorage");
+    }
+
+    public class Car
+    {
+        public string Model { get; set; }
+        public int Year { get; set; }
+        public string Broken { get; set; }
+    }
+}
