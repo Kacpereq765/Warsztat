@@ -47,10 +47,10 @@
 
     private async Task SaveWorkerToLocalStorage(Car car)
     {
-        // Wczytanie istniejących pracowników
+        // Wczytanie istniejących samochodów
         var cars = await localStorage.GetItemAsync<List<Car>>("cars") ?? new List<Car>();
 
-        // Dodanie nowego pracownika
+        // Dodanie nowego samochodu
         cars.Add(car);
 
         // Zapis do localStorage
