@@ -1,0 +1,16 @@
+[
+  {
+    "Name": "Jacek",
+    "Surname": "Paluch",
+    "Age": "22",
+    "Adress": "Polna 23",
+    "Position": "Lakiernik"
+  },
+  {
+    "Name": "Dawid",
+    "Surname": "Nowak",
+    "Age": "16",
+    "Adress": "Poniewierzyce 3",
+    "Position": "Praktykant"
+  },
+]

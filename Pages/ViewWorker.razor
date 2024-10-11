@@ -1,17 +1,66 @@
 ﻿@page "/ViewWorker"
 @using MudBlazor
 @inject NavigationManager NavigationManager
+@inject HttpClient Http
 
 <h3>Pracownicy</h3>
 
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Wiek</th>
+                <th>Adres zamieszkania</th>
+                <th>Stanowisko</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Name</td>
+                    <td>@forecast.Surname</td>
+                    <td>@forecast.Age</td>
+                    <td>@forecast.Adress</td>
+                    <td>@forecast.Position</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 <MudContainer>
-    <MudButton Variant="MudBlazor.Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="NavigateToAddWorker">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToAddWorker">
         Dodaj Pracownika
     </MudButton>
 </MudContainer>
 
-@code {
-    private void NavigateToAddWorker(){
+    @code {
+        private Worker[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<Worker[]>("sample-data/Workers.json");  
+    }
+
+    private void NavigateToAddWorker()
+    {
         NavigationManager.NavigateTo("/AddWorker");
+    }
+
+    public class Worker
+    {
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Age { get; set; }
+        public string Adress { get; set; }
+        public string Position { get; set; }
     }
 }

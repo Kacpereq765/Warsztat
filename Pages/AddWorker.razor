@@ -1,16 +1,19 @@
 ﻿@page "/AddWorker"
 @using MudBlazor
+@using System.IO
+@using System.Text.Json
+@inject NavigationManager NavigationManager
 
 <h3>Dodaj pracownika</h3>
 
 <MudContainer>
     <MudCard>
         <MudCardContent>
-            <MudForm @ref="form" Model="worker" Validations="null">
+            <MudForm @ref="form" Model="worker">
                 <MudTextField @bind-Value="worker.Name" Label="Imię pracownika" Required="true" />
                 <MudTextField @bind-Value="worker.Surname" Label="Nazwisko pracownika" Required="true" />
                 <MudTextField @bind-Value="worker.Age" Label="Wiek pracownika" Required="true" />
-                <MudTextField @bind-Value="worker.Adress" Label="Adres zamieszkania pracownika" Required="true" />
+                <MudTextField @bind-Value="worker.Address" Label="Adres zamieszkania pracownika" Required="true" />
                 <MudTextField @bind-Value="worker.Position" Label="Stanowisko pracownika" Required="true" />
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj pracownika</MudButton>
             </MudForm>
@@ -19,16 +22,18 @@
 </MudContainer>
 
 @code {
-    private Worker worker = new(); 
+    private Worker worker = new();
     private MudForm form;
 
     private void SubmitForm()
     {
         if (form.IsValid)
         {
-            Console.WriteLine($"Dodano pracownika: {worker.Name}, Nazwisko: {worker.Surname}, Wiek: {worker.Age}, Adres zamieszkania pracownika: {worker.Adress}, Stanowisko: {worker.Position}");
+            Console.WriteLine($"Dodano pracownika: {worker.Name}, Nazwisko: {worker.Surname}, Wiek: {worker.Age}, Adres: {worker.Address}, Stanowisko: {worker.Position}");
 
-            // Napisac pozniej dodawanie pracownika do bazy danych
+            SaveWorkerToFile(worker);
+
+            NavigationManager.NavigateTo("/ViewWorker");
         }
         else
         {
@@ -36,12 +41,38 @@
         }
     }
 
+    private void SaveWorkerToFile(Worker worker)
+    {
+        string filePath = "Workers.json";
+
+        // Wczytanie istniejących pracowników
+        List<Worker> workers;
+        if (File.Exists(filePath))
+        {
+            var json = File.ReadAllText(filePath);
+            workers = JsonSerializer.Deserialize<List<Worker>>(json) ?? new List<Worker>();
+        }
+        else
+        {
+            workers = new List<Worker>();
+        }
+
+        // Dodanie nowego pracownika
+        workers.Add(worker);
+
+        // Zapis do pliku JSON
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        var jsonString = JsonSerializer.Serialize(workers, options);
+        File.WriteAllText(filePath, jsonString);
+        Console.WriteLine("Dodano pracownika do pliku JSON");
+    }
+
     public class Worker
     {
-        public string Name { get; set; } 
-        public string Surname { get; set; } 
-        public string Age { get; set; } 
-        public string Adress { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public int Age { get; set; }
+        public string Address { get; set; }
         public string Position { get; set; }
     }
 }
