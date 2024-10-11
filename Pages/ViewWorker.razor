@@ -1,13 +1,24 @@
 ﻿@page "/ViewWorker"
 @using MudBlazor
+@using Blazored.LocalStorage
 @inject NavigationManager NavigationManager
-@inject HttpClient Http
+@inject ILocalStorageService localStorage
 
 <h3>Pracownicy</h3>
 
-@if (forecasts == null)
+<MudContainer>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToAddWorker">
+        Dodaj Pracownika
+    </MudButton>
+</MudContainer>
+
+@if (workers == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>Ładowanie...</em></p>
+}
+else if (workers.Count == 0)
+{
+    <p>Brak pracowników.</p>
 }
 else
 {
@@ -22,32 +33,26 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var worker in workers)
             {
                 <tr>
-                    <td>@forecast.Name</td>
-                    <td>@forecast.Surname</td>
-                    <td>@forecast.Age</td>
-                    <td>@forecast.Adress</td>
-                    <td>@forecast.Position</td>
+                    <td>@worker.Name</td>
+                    <td>@worker.Surname</td>
+                    <td>@worker.Age</td>
+                    <td>@worker.Address</td>
+                    <td>@worker.Position</td>
                 </tr>
             }
         </tbody>
     </table>
 }
 
-<MudContainer>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToAddWorker">
-        Dodaj Pracownika
-    </MudButton>
-</MudContainer>
-
-    @code {
-        private Worker[]? forecasts;
+@code {
+    private List<Worker> workers;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<Worker[]>("sample-data/Workers.json");  
+        workers = await localStorage.GetItemAsync<List<Worker>>("workers") ?? new List<Worker>();
     }
 
     private void NavigateToAddWorker()
@@ -59,8 +64,8 @@ else
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Age { get; set; }
-        public string Adress { get; set; }
+        public int Age { get; set; }
+        public string Address { get; set; }
         public string Position { get; set; }
     }
 }

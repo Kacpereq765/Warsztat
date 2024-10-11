@@ -1,8 +1,8 @@
 ﻿@page "/AddWorker"
 @using MudBlazor
-@using System.IO
-@using System.Text.Json
+@using Blazored.LocalStorage
 @inject NavigationManager NavigationManager
+@inject ILocalStorageService localStorage
 
 <h3>Dodaj pracownika</h3>
 
@@ -25,13 +25,13 @@
     private Worker worker = new();
     private MudForm form;
 
-    private void SubmitForm()
+    private async void SubmitForm()
     {
         if (form.IsValid)
         {
             Console.WriteLine($"Dodano pracownika: {worker.Name}, Nazwisko: {worker.Surname}, Wiek: {worker.Age}, Adres: {worker.Address}, Stanowisko: {worker.Position}");
 
-            SaveWorkerToFile(worker);
+            await SaveWorkerToLocalStorage(worker);
 
             NavigationManager.NavigateTo("/ViewWorker");
         }
@@ -41,30 +41,17 @@
         }
     }
 
-    private void SaveWorkerToFile(Worker worker)
+    private async Task SaveWorkerToLocalStorage(Worker worker)
     {
-        string filePath = "Workers.json";
-
         // Wczytanie istniejących pracowników
-        List<Worker> workers;
-        if (File.Exists(filePath))
-        {
-            var json = File.ReadAllText(filePath);
-            workers = JsonSerializer.Deserialize<List<Worker>>(json) ?? new List<Worker>();
-        }
-        else
-        {
-            workers = new List<Worker>();
-        }
+        var workers = await localStorage.GetItemAsync<List<Worker>>("workers") ?? new List<Worker>();
 
         // Dodanie nowego pracownika
         workers.Add(worker);
 
-        // Zapis do pliku JSON
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        var jsonString = JsonSerializer.Serialize(workers, options);
-        File.WriteAllText(filePath, jsonString);
-        Console.WriteLine("Dodano pracownika do pliku JSON");
+        // Zapis do localStorage
+        await localStorage.SetItemAsync("workers", workers);
+        Console.WriteLine("Dodano pracownika do localStorage");
     }
 
     public class Worker
