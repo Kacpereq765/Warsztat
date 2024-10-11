@@ -6,12 +6,6 @@
 
 <h3>Pracownicy</h3>
 
-<MudContainer>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToAddWorker">
-        Dodaj Pracownika
-    </MudButton>
-</MudContainer>
-
 @if (workers == null)
 {
     <p><em>Ładowanie...</em></p>
@@ -46,6 +40,12 @@ else
         </tbody>
     </table>
 }
+
+<MudContainer>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToAddWorker">
+        Dodaj Pracownika
+    </MudButton>
+</MudContainer>
 
 @code {
     private List<Worker> workers;

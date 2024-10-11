@@ -1,17 +1,66 @@
 ﻿@page "/ViewWorkshop"
 @using MudBlazor
+@using Blazored.LocalStorage
 @inject NavigationManager NavigationManager
+@inject ILocalStorageService localStorage
 
 <h3>Warsztaty</h3>
 
+@if (workshops == null)
+{
+    <p><em>Ładowanie...</em></p>
+}
+else if (workshops.Count == 0)
+{
+    <p>Brak warsztatów.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Lokalizacja</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var workshop in workshops)
+            {
+                <tr>
+                    <td>@workshop.NameWorkshop</td>
+                    <td>@workshop.Description</td>
+                    <td>@workshop.Location</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 <MudContainer>
-    <MudButton Variant="MudBlazor.Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="NavigateToAddWorkshop">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToAddWorkshop">
         Dodaj Warsztat
     </MudButton>
 </MudContainer>
 
 @code {
-    private void NavigateToAddWorkshop(){
+    private List<Workshop> workshops;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Użyj poprawnego klucza
+        workshops = await localStorage.GetItemAsync<List<Workshop>>("workshops") ?? new List<Workshop>();
+    }
+
+    private void NavigateToAddWorkshop()
+    {
         NavigationManager.NavigateTo("/AddWorkshop");
+    }
+
+    public class Workshop
+    {
+        public string NameWorkshop { get; set; }
+        public string Description { get; set; }
+        public string Location { get; set; }
     }
 }
