@@ -6,7 +6,6 @@ using Blazored.LocalStorage;
 using Microsoft.EntityFrameworkCore;
 using warsztat.Services;
 using warsztat.Data;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

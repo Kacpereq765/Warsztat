@@ -7,7 +7,7 @@ namespace warsztat.Models
         public int Id { get; set; } 
 
         [Required(ErrorMessage = "Model is required.")]
-        public string Model { get; set; } = string.Empty;
+        public string Model { get; set; } 
 
         [Range(1886, 2100, ErrorMessage = "Year must be between 1886 and 2100.")]
         public int Year { get; set; }
