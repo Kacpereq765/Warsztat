@@ -1,8 +1,9 @@
 ﻿@page "/AddCar"
 @using MudBlazor
-@using Blazored.LocalStorage
+@using warsztat.Services 
 @inject NavigationManager NavigationManager
-@inject ILocalStorageService localStorage
+@inject ICarService carService 
+@using warsztat.Models
 
 <h3>Dodaj samochód do naprawy</h3>
 
@@ -12,7 +13,8 @@
             <MudForm @ref="form" Model="car">
                 <MudTextField @bind-Value="car.Model" Label="Model samochodu" Required="true" />
                 <MudTextField @bind-Value="car.Year" Label="Rocznik samochodu" Required="true" />
-                <MudTextField @bind-Value="car.Broken" Label="Podaj co zepsute" Required="true" />
+                <MudSwitch @bind-Value="car.IsBroken" Label="Czy zepsuty?" Required="true" />
+                <MudTextField @bind-Value="car.Price" Label="Cena naprawy" Required="true" />
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj samochód</MudButton>
             </MudForm>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Return">Powrót</MudButton>
@@ -24,14 +26,12 @@
     private Car car = new();
     private MudForm form;
 
-    private async void SubmitForm()
+    private async Task SubmitForm()
     {
         if (form.IsValid)
         {
-            Console.WriteLine($"Dodano samochód: {car.Model}, rocznik: {car.Year}, zepsute w nim: {car.Broken}");
-
-            await SaveWorkerToLocalStorage(car);
-
+            Console.WriteLine($"Model: {car.Model}, Year: {car.Year}, IsBroken: {car.IsBroken}, Price: {car.Price}");
+            await carService.AddCarAsync(car); // Zapis do bazy
             NavigationManager.NavigateTo("/ViewCar");
         }
         else
@@ -40,28 +40,8 @@
         }
     }
 
-    private async Task Return()
+    private void Return()
     {
         NavigationManager.NavigateTo("/ViewCar");
-    }
-
-    private async Task SaveWorkerToLocalStorage(Car car)
-    {
-        // Wczytanie istniejących samochodów
-        var cars = await localStorage.GetItemAsync<List<Car>>("cars") ?? new List<Car>();
-
-        // Dodanie nowego samochodu
-        cars.Add(car);
-
-        // Zapis do localStorage
-        await localStorage.SetItemAsync("cars", cars);
-        Console.WriteLine("Dodano samochód do localStorage");
-    }
-
-    public class Car
-    {
-        public string Model { get; set; }
-        public int Year { get; set; }
-        public string Broken { get; set; }
     }
 }

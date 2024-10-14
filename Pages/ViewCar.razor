@@ -1,8 +1,9 @@
 ﻿@page "/ViewCar"
 @using MudBlazor
-@using Blazored.LocalStorage
+@using warsztat.Services
 @inject NavigationManager NavigationManager
-@inject ILocalStorageService localStorage
+@inject ICarService carService
+@using warsztat.Models
 
 <h3>Samochody do naprawy</h3>
 
@@ -30,7 +31,7 @@ else
                 <tr>
                     <td>@car.Model</td>
                     <td>@car.Year</td>
-                    <td>@car.Broken</td>
+                    <td>@car.IsBroken</td> 
                 </tr>
             }
         </tbody>
@@ -43,24 +44,32 @@ else
     </MudButton>
 </MudContainer>
 
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
+
 @code {
     private List<Car> cars;
+    private string errorMessage; 
 
     protected override async Task OnInitializedAsync()
     {
-        // Wczytanie samochodów z localStorage
-        cars = await localStorage.GetItemAsync<List<Car>>("cars") ?? new List<Car>();
+        try
+        {
+            cars = await carService.GetCarsAsync() ?? new List<Car>();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Wystąpił problem podczas pobierania samochodów: " + ex.Message;
+            Console.WriteLine($"Błąd: {ex.Message}"); // Logowanie błędu
+        }
     }
 
     private void NavigateToAddCar()
     {
         NavigationManager.NavigateTo("/AddCar");
-    }
-
-    public class Car
-    {
-        public string Model { get; set; }
-        public int Year { get; set; }
-        public string Broken { get; set; }
     }
 }
