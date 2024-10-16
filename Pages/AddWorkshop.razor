@@ -1,8 +1,9 @@
 ﻿@page "/AddWorkshop"
 @using MudBlazor
-@using Blazored.LocalStorage
+@using warsztat.Services
 @inject NavigationManager NavigationManager
-@inject ILocalStorageService localStorage
+@inject IWorkshopService WorkshopService // Popraw tutaj
+@using warsztat.Models
 
 <h3>Dodaj warsztat</h3>
 
@@ -28,40 +29,18 @@
     {
         if (form.IsValid)
         {
-            Console.WriteLine($"Dodano warsztat: {workshop.NameWorkshop}, Opis: {workshop.Description}, Lokalizacja: {workshop.Location}");
-
-            await SaveWorkshopToLocalStorage(workshop); 
-
-            NavigationManager.NavigateTo("/ViewWorkshop");
+            Console.WriteLine($"Nazwa warsztatu : {workshop.NameWorkshop}, Opis warsztatu: {workshop.Description}, Lokalizacja warsztatu: {workshop.Location}");
+            await WorkshopService.AddWorkshopAsync(workshop); // Zapisz warsztat do bazy
+            NavigationManager.NavigateTo("/ViewWorkshop"); // Przejdź do widoku warsztatów
         }
         else
         {
-            Console.WriteLine("Formularz nie jest ważny.");
+            Console.WriteLine("Formularz nie jest ważny."); 
         }
     }
 
-    private async Task Return()
+    private void Return()
     {
-        NavigationManager.NavigateTo("/ViewWorkshop");
-    }
-
-    private async Task SaveWorkshopToLocalStorage(Workshop workshop)
-    {
-        // Wczytanie istniejących warsztatów
-        var workshops = await localStorage.GetItemAsync<List<Workshop>>("workshops") ?? new List<Workshop>();
-
-        // Dodanie nowego warsztatu
-        workshops.Add(workshop);
-
-        // Zapis do localStorage
-        await localStorage.SetItemAsync("workshops", workshops);
-        Console.WriteLine("Dodano warsztat do localStorage");
-    }
-
-    public class Workshop
-    {
-        public string NameWorkshop { get; set; }
-        public string Description { get; set; }
-        public string Location { get; set; }
+        NavigationManager.NavigateTo("/ViewWorkshop"); 
     }
 }

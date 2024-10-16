@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using warsztat.Models;
 using System.Threading.Tasks;
-using warsztat.Models;
+using Microsoft.EntityFrameworkCore;
 
-public interface IWorkerService
+namespace warsztat.Services
 {
-    Task AddWorkerAsync(Worker worker);
-
-    Task<List<Worker>> GetWorkersAsync();
+    public interface IWorkerService
+    {
+        Task<List<Worker>> GetWorkersAsync();
+        Task AddWorkerAsync(Worker worker);
+    }
 }

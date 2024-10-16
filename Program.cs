@@ -25,4 +25,6 @@ builder.Services.AddScoped<CarService>();
 
 builder.Services.AddScoped<IWorkerService, WorkerService>();
 
+builder.Services.AddScoped<IWorkshopService, WorkshopService>();
+
 await builder.Build().RunAsync();

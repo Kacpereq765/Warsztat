@@ -1,8 +1,9 @@
 ﻿@page "/ViewWorkshop"
 @using MudBlazor
-@using Blazored.LocalStorage
+@using warsztat.Models
+@using warsztat.Services
 @inject NavigationManager NavigationManager
-@inject ILocalStorageService localStorage
+@inject IWorkshopService WorkshopService
 
 <h3>Warsztaty</h3>
 
@@ -43,24 +44,32 @@ else
     </MudButton>
 </MudContainer>
 
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
+
 @code {
     private List<Workshop> workshops;
+    private string errorMessage;
 
     protected override async Task OnInitializedAsync()
     {
-        // Użyj poprawnego klucza
-        workshops = await localStorage.GetItemAsync<List<Workshop>>("workshops") ?? new List<Workshop>();
+        try
+        {
+            workshops = await WorkshopService.GetWorkshopsAsync() ?? new List<Workshop>();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Wystąpił problem podczas pobierania warsztatów: " + ex.Message;
+            Console.WriteLine($"Błąd: {ex.Message}"); // Logowanie błędu
+        }
     }
 
     private void NavigateToAddWorkshop()
     {
         NavigationManager.NavigateTo("/AddWorkshop");
-    }
-
-    public class Workshop
-    {
-        public string NameWorkshop { get; set; }
-        public string Description { get; set; }
-        public string Location { get; set; }
     }
 }
