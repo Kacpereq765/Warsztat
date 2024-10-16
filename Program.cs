@@ -23,4 +23,6 @@ builder.Services.AddDbContext<warsztatDbContext>(options =>
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<CarService>();
 
+builder.Services.AddScoped<IWorkerService, WorkerService>();
+
 await builder.Build().RunAsync();

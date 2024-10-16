@@ -1,8 +1,9 @@
 ﻿@page "/AddWorker"
 @using MudBlazor
-@using Blazored.LocalStorage
+@using warsztat.Services
 @inject NavigationManager NavigationManager
-@inject ILocalStorageService localStorage
+@inject IWorkerService workerService
+@using warsztat.Models
 
 <h3>Dodaj pracownika</h3>
 
@@ -10,8 +11,8 @@
     <MudCard>
         <MudCardContent>
             <MudForm @ref="form" Model="worker">
-                <MudTextField @bind-Value="worker.Name" Label="Imię pracownika" Required="true" />
-                <MudTextField @bind-Value="worker.Surname" Label="Nazwisko pracownika" Required="true" />
+                <MudTextField @bind-Value="worker.FirstName" Label="Imię pracownika" Required="true" />
+                <MudTextField @bind-Value="worker.LastName" Label="Nazwisko pracownika" Required="true" />
                 <MudTextField @bind-Value="worker.Age" Label="Wiek pracownika" Required="true" />
                 <MudTextField @bind-Value="worker.Address" Label="Adres zamieszkania pracownika" Required="true" />
                 <MudTextField @bind-Value="worker.Position" Label="Stanowisko pracownika" Required="true" />
@@ -26,14 +27,12 @@
     private Worker worker = new();
     private MudForm form;
 
-    private async void SubmitForm()
+    private async Task SubmitForm()
     {
         if (form.IsValid)
         {
-            Console.WriteLine($"Dodano pracownika: {worker.Name}, Nazwisko: {worker.Surname}, Wiek: {worker.Age}, Adres: {worker.Address}, Stanowisko: {worker.Position}");
-
-            await SaveWorkerToLocalStorage(worker);
-
+            Console.WriteLine($"Imię: {worker.FirstName}, Nazwisko: {worker.LastName}, Wiek: {worker.Age}, Adres: {worker.Address}, Stanowisko: {worker.Position}");
+            await workerService.AddWorkerAsync(worker); // Zapis do bazy przez serwis
             NavigationManager.NavigateTo("/ViewWorker");
         }
         else
@@ -42,30 +41,8 @@
         }
     }
 
-    private async Task Return()
+    private void Return()
     {
         NavigationManager.NavigateTo("/ViewWorker");
-    }
-
-    private async Task SaveWorkerToLocalStorage(Worker worker)
-    {
-        // Wczytanie istniejących pracowników
-        var workers = await localStorage.GetItemAsync<List<Worker>>("workers") ?? new List<Worker>();
-
-        // Dodanie nowego pracownika
-        workers.Add(worker);
-
-        // Zapis do localStorage
-        await localStorage.SetItemAsync("workers", workers);
-        Console.WriteLine("Dodano pracownika do localStorage");
-    }
-
-    public class Worker
-    {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public int Age { get; set; }
-        public string Address { get; set; }
-        public string Position { get; set; }
     }
 }

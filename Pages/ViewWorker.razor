@@ -1,8 +1,9 @@
 ﻿@page "/ViewWorker"
 @using MudBlazor
-@using Blazored.LocalStorage
+@using warsztat.Services
 @inject NavigationManager NavigationManager
-@inject ILocalStorageService localStorage
+@inject IWorkerService workerService
+@using warsztat.Models
 
 <h3>Pracownicy</h3>
 
@@ -30,8 +31,8 @@ else
             @foreach (var worker in workers)
             {
                 <tr>
-                    <td>@worker.Name</td>
-                    <td>@worker.Surname</td>
+                    <td>@worker.FirstName</td>
+                    <td>@worker.LastName</td>
                     <td>@worker.Age</td>
                     <td>@worker.Address</td>
                     <td>@worker.Position</td>
@@ -47,25 +48,32 @@ else
     </MudButton>
 </MudContainer>
 
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
+
 @code {
     private List<Worker> workers;
+    private string errorMessage;
 
     protected override async Task OnInitializedAsync()
     {
-        workers = await localStorage.GetItemAsync<List<Worker>>("workers") ?? new List<Worker>();
+        try
+        {
+            workers = await workerService.GetWorkersAsync() ?? new List<Worker>();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Wystąpił problem podczas pobierania pracowników: " + ex.Message;
+            Console.WriteLine($"Błąd: {ex.Message}"); // Logowanie błędu
+        }
     }
 
     private void NavigateToAddWorker()
     {
         NavigationManager.NavigateTo("/AddWorker");
-    }
-
-    public class Worker
-    {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public int Age { get; set; }
-        public string Address { get; set; }
-        public string Position { get; set; }
     }
 }
