@@ -11,9 +11,18 @@
     <MudCard>
         <MudCardContent>
             <MudForm @ref="form" Model="workshop" Validations="null">
-                <MudTextField @bind-Value="workshop.NameWorkshop" Label="Nazwa warsztatu" Required="true" />
-                <MudTextField @bind-Value="workshop.Description" Label="Opis warsztatu" Required="true" />
-                <MudTextField @bind-Value="workshop.Location" Label="Lokalizacja warsztatu" Required="true" />
+                <MudTextField @bind-Value="workshop.NameWorkshop" Variant="Variant.Outlined" Label="Nazwa warsztatu" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
+                <MudTextField @bind-Value="workshop.Description" Variant="Variant.Outlined" Label="Opis warsztatu" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
+                <MudTextField @bind-Value="workshop.Location" Variant="Variant.Outlined" Label="Lokalizacja warsztatu" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj warsztat</MudButton>
             </MudForm>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Return">Powrót</MudButton>

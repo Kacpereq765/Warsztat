@@ -11,11 +11,26 @@
     <MudCard>
         <MudCardContent>
             <MudForm @ref="form" Model="worker">
-                <MudTextField @bind-Value="worker.FirstName" Label="Imię pracownika" Required="true" />
-                <MudTextField @bind-Value="worker.LastName" Label="Nazwisko pracownika" Required="true" />
-                <MudTextField @bind-Value="worker.Age" Label="Wiek pracownika" Required="true" />
-                <MudTextField @bind-Value="worker.Address" Label="Adres zamieszkania pracownika" Required="true" />
-                <MudTextField @bind-Value="worker.Position" Label="Stanowisko pracownika" Required="true" />
+                <MudTextField @bind-Value="worker.FirstName" Variant="Variant.Outlined" Label="Imię pracownika" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
+                <MudTextField @bind-Value="worker.LastName" Variant="Variant.Outlined" Label="Nazwisko pracownika" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
+                <MudTextField @bind-Value="worker.Age" Class="border-solid border-1 mud-border-primary pa-2" Label="Wiek pracownika" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
+                <MudTextField @bind-Value="worker.Address" Variant="Variant.Outlined" Label="Adres zamieszkania pracownika" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
+                <MudTextField @bind-Value="worker.Position" Variant="Variant.Outlined" Label="Stanowisko pracownika" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj pracownika</MudButton>
             </MudForm>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Return">Powrót</MudButton>

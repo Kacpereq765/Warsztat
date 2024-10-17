@@ -11,10 +11,22 @@
     <MudCard>
         <MudCardContent>
             <MudForm @ref="form" Model="car">
-                <MudTextField @bind-Value="car.Model" Label="Model samochodu" Required="true" />
-                <MudTextField @bind-Value="car.Year" Label="Rocznik samochodu" Required="true" />
-                <MudSwitch @bind-Value="car.IsBroken" Label="Czy zepsuty?" Required="true" />
-                <MudTextField @bind-Value="car.Price" Label="Cena naprawy" Required="true" />
+                <MudTextField @bind-Value="car.Model" Variant="Variant.Outlined" Label="Model samochodu" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
+                <MudTextField @bind-Value="car.Year" Class="border-solid border-1 mud-border-primary pa-2" Label="Rocznik samochodu" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
+                <MudSwitch @bind-Value="car.IsBroken" Class="border-solid border-1 mud-border-primary pa-2" Label="Czy zepsuty?" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
+                <MudTextField @bind-Value="car.Price" Class="border-solid border-1 mud-border-primary pa-2" Label="Cena naprawy" Required="true" />
+                <MudDivider />
+                <MudDivider />
+                <MudDivider />
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm">Dodaj samochód</MudButton>
             </MudForm>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Return">Powrót</MudButton>
