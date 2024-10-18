@@ -9,7 +9,7 @@
 
 @if (workshops == null)
 {
-    <p><em>Ładowanie...</em></p>
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
 }
 else if (workshops.Count == 0)
 {
