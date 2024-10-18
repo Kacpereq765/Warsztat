@@ -51,5 +51,11 @@ namespace warsztat.Services
                 throw;
             }
         }
+
+        public async Task DeleteWorkshopAsync(int workshopId)
+        {
+            var response = await _httpClient.DeleteAsync($"https://localhost:7145/api/workshops/{workshopId}");
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

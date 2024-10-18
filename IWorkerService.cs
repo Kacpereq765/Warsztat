@@ -8,5 +8,6 @@ namespace warsztat.Services
     {
         Task<List<Worker>> GetWorkersAsync();
         Task AddWorkerAsync(Worker worker);
+        Task DeleteWorkerAsync(int workerId);
     }
 }

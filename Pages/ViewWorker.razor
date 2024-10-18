@@ -36,6 +36,7 @@ else
                     <td>@worker.Age</td>
                     <td>@worker.Address</td>
                     <td>@worker.Position</td>
+                    <td><MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="() => DeleteWorker(worker.WorkerID)" /></td>
                 </tr>
             }
         </tbody>
@@ -68,6 +69,22 @@ else
         catch (Exception ex)
         {
             errorMessage = "Wystąpił problem podczas pobierania pracowników: " + ex.Message;
+            Console.WriteLine($"Błąd: {ex.Message}"); // Logowanie błędu
+        }
+    }
+
+    private async Task DeleteWorker(int workerId)
+    {
+        try
+        {
+            // Wywołanie metody usuwającej pracownika z serwisu
+            await workerService.DeleteWorkerAsync(workerId);
+            // Odświeżenie listy pracowników po usunięciu
+            workers = await workerService.GetWorkersAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Wystąpił problem podczas usuwania pracownika: " + ex.Message;
             Console.WriteLine($"Błąd: {ex.Message}"); // Logowanie błędu
         }
     }

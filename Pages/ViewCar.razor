@@ -24,6 +24,7 @@ else
                 <th>Rocznik</th>
                 <th>Czy zepsuty</th>
                 <th>Cena naprawy</th>
+                <th>Akcja</th>
             </tr>
         </thead>
         <tbody>
@@ -32,8 +33,11 @@ else
                 <tr>
                     <td>@car.Model</td>
                     <td>@car.Year</td>
-                    <td>@car.IsBroken</td> 
+                    <td>@(car.IsBroken ? "Tak" : "Nie")</td>
                     <td>@car.Price</td>
+                    <td>
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete"Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="() => DeleteCar(car.CarID)" />
+                    </td>
                 </tr>
             }
         </tbody>
@@ -55,7 +59,7 @@ else
 
 @code {
     private List<Car> cars;
-    private string errorMessage; 
+    private string errorMessage;
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,6 +70,20 @@ else
         catch (Exception ex)
         {
             errorMessage = "Wystąpił problem podczas pobierania samochodów: " + ex.Message;
+            Console.WriteLine($"Błąd: {ex.Message}"); // Logowanie błędu
+        }
+    }
+
+    private async Task DeleteCar(int carId)
+    {
+        try
+        {
+            await carService.DeleteCarAsync(carId);  // Wywołanie metody do usunięcia samochodu
+            cars = await carService.GetCarsAsync();  // Odświeżenie listy samochodów po usunięciu
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Wystąpił problem podczas usuwania samochodu: " + ex.Message;
             Console.WriteLine($"Błąd: {ex.Message}"); // Logowanie błędu
         }
     }

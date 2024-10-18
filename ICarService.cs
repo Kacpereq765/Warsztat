@@ -7,6 +7,7 @@ namespace warsztat.Services
     public interface ICarService
     {
         Task AddCarAsync(Car car);
-        Task<List<Car>> GetCarsAsync(); 
+        Task<List<Car>> GetCarsAsync();
+        Task DeleteCarAsync(int carId);
     }
 }

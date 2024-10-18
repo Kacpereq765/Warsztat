@@ -32,6 +32,7 @@ else
                     <td>@workshop.NameWorkshop</td>
                     <td>@workshop.Description</td>
                     <td>@workshop.Location</td>
+                    <td><MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" OnClick="() => DeleteWorkshop(workshop.WorkshopID)" /></td>
                 </tr>
             }
         </tbody>
@@ -57,6 +58,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadWorkshops();  // Ładowanie warsztatów przy inicjalizacji
+    }
+
+    private async Task LoadWorkshops()
+    {
         try
         {
             workshops = await WorkshopService.GetWorkshopsAsync() ?? new List<Workshop>();
@@ -65,6 +71,20 @@ else
         {
             errorMessage = "Wystąpił problem podczas pobierania warsztatów: " + ex.Message;
             Console.WriteLine($"Błąd: {ex.Message}"); // Logowanie błędu
+        }
+    }
+
+    private async Task DeleteWorkshop(int workshopId)
+    {
+        try
+        {
+            await WorkshopService.DeleteWorkshopAsync(workshopId);  // Usunięcie warsztatu
+            await LoadWorkshops();  // Odświeżenie listy warsztatów po usunięciu
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Wystąpił problem podczas usuwania warsztatu: " + ex.Message;
+            Console.WriteLine($"Błąd: {ex.Message}");
         }
     }
 

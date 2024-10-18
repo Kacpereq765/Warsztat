@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Json;
-using System.Text.Json;
 using warsztat.Models;
 
 namespace warsztat.Services
@@ -24,7 +23,7 @@ namespace warsztat.Services
             catch (HttpRequestException ex)
             {
                 Console.WriteLine($"Błąd podczas pobierania samochodów: {ex.Message}");
-                throw; 
+                throw;
             }
         }
 
@@ -38,7 +37,7 @@ namespace warsztat.Services
                 Console.WriteLine($"Response Status Code: {response.StatusCode}");
                 Console.WriteLine($"Response Content: {responseContent}");
 
-                response.EnsureSuccessStatusCode(); 
+                response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException ex)
             {
@@ -52,5 +51,29 @@ namespace warsztat.Services
             }
         }
 
+        // Metoda do usuwania samochodu po ID
+        public async Task DeleteCarAsync(int carId)
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"https://localhost:7145/api/cars/{carId}");
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Response Status Code: {response.StatusCode}");
+                Console.WriteLine($"Response Content: {responseContent}");
+
+                response.EnsureSuccessStatusCode(); // Sprawdź, czy status odpowiedzi to 2xx
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Błąd podczas usuwania samochodu: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                throw;
+            }
+        }
     }
 }

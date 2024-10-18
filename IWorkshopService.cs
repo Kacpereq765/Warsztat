@@ -7,6 +7,7 @@ namespace warsztat.Services
     public interface IWorkshopService
     {
         Task AddWorkshopAsync(Workshop workshop);
-        Task<List<Workshop>> GetWorkshopsAsync(); 
+        Task<List<Workshop>> GetWorkshopsAsync();
+        Task DeleteWorkshopAsync(int workshopId);
     }
 }
